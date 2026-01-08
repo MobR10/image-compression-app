@@ -84,7 +84,7 @@ def soften_mask(mask, blur_radius):
     return m
 
 def svd_blur_channel(A, k):
-    U, s, Vt = np.linalg.svd(A)
+    U, s, Vt = np.linalg.svd(A, full_matrices=False)
     minDim =  min(k, s.shape[0])
     k = max(1,minDim)
     return (U[:, :k] * s[:k]) @ Vt[:k, :]
