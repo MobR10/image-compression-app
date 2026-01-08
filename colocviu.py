@@ -99,7 +99,7 @@ def svd_blur_rgb(rgb, k):
     return (out*255).astype(np.uint8)
 
 def composition(rgb, person_mask, k):
-    m = np.clip(person_mask, 0.0, 1.0)
+    m = np.clip(person_mask,0,1)
     if m.ndim != 2:
         raise ValueError(f"Expected 2D person_mask, got shape {m.shape}")
     m3 = m[:,:, None]  
