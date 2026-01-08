@@ -20,9 +20,6 @@ import numpy as np
 from PIL import Image
 import mediapipe as mp
 
-# -----------------------------
-# I/O
-# -----------------------------
 def load(path: str) -> np.ndarray:
     return np.array(Image.open(path).convert("RGB"))
 
