@@ -110,24 +110,52 @@ def composition(rgb, person_mask, k):
     out = np.clip(out,0,1)
     return (out * 255).astype(np.uint8)
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--input", required=True)
-    parser.add_argument("--model", required=True)
-    parser.add_argument("--output", default="output.jpg")
-    parser.add_argument("--k", type=int)
-    parser.add_argument("--mask_blur", type=int)
-    args = parser.parse_args()
 
-    rgb = load(args.input)
+###############################################################################
 
-    person = get_person_mask_tasks(rgb, args.model)
+from io import BytesIO
 
-    if args.mask_blur > 0:
-        person = soften_mask(person, blur_radius=args.mask_blur)
+def load_image_bytes(file_bytes):
+    """Convert bytes from uploaded file to NumPy RGB array"""
+    img = Image.open(BytesIO(file_bytes)).convert("RGB")
+    return np.array(img)
 
-    out = composition(rgb, person, k=args.k)
-    save(args.output, out)
+def image_to_bytes(rgb_array):
+    """Convert NumPy RGB array to BytesIO (JPEG) for send_file"""
+    img = Image.fromarray(rgb_array.astype(np.uint8))
+    buf = BytesIO()
+    img.save(buf, format="JPEG")
+    buf.seek(0)
+    return buf
 
-if __name__ == "__main__":
-    main()
+MODEL_PATH = "models/selfie_multiclass_256x256.tflite"
+
+def process_image(fileInBytes,k,blur_radius=3):
+    rgb = load_image_bytes(fileInBytes)
+    person = get_person_mask_tasks(rgb, MODEL_PATH)
+    person = soften_mask(person,blur_radius)
+    out = composition(rgb,person,k)
+    return out
+
+# def main():
+#     parser = argparse.ArgumentParser()
+#     parser.add_argument("--input", required=True)
+#     parser.add_argument("--model", required=True)
+#     parser.add_argument("--output", default="output.jpg")
+#     parser.add_argument("--k", type=int)
+#     parser.add_argument("--mask_blur", type=int)
+#     args = parser.parse_args()
+
+#     rgb = load(args.input)
+
+#     person = get_person_mask_tasks(rgb, args.model)
+
+#     if args.mask_blur > 0:
+#         person = soften_mask(person, blur_radius=args.mask_blur)
+
+#     out = composition(rgb, person, k=args.k)
+#     save(args.output, out)
+
+# if __name__ == "__main__":
+#     main()
+

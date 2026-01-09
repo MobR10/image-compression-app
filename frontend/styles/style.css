@@ -1,0 +1,47 @@
+body {
+  border-color: rebeccapurple;
+  background-color: beige;
+}
+#images {
+  display: block;
+  border: 10px;
+
+  align-self: center;
+  justify-items: center;
+  align-content: center;
+
+  max-width: 50vmax;
+  max-height: 50vmax;
+}
+#images img {
+  max-width: 80%;
+  max-height: 80%;
+}
+
+label {
+    display:inline-flex;
+    font-family:'Times New Roman', Times, serif;
+    font-size: larger;
+    margin: 10px;
+}
+
+h1{
+    display: inline-flex;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+p{
+
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 25px;
+}
+
+#imgForm input{
+    font-size: large;
+}
+
+#imgForm button{
+    font-size: large;
+    color: green;
+    background-color: whitesmoke;
+}

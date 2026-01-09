@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="styles/style.css">
+
+
+    <title>Compression App</title>
+</head>
+<body>
+    <h1>Welcome to our Compression App</h1>
+        <p>Attach your image to compress it!</p>
+
+        <form id="imgForm" action="http://localhost:5000/processImage" method="post" enctype="multipart/form-data">
+            <label for="factor">Compression Factor</label>
+            <input type="number" id="factor" name="factor" min="1" max="100" value="10"/>
+            <br/>
+            <label for="radius">Blur Radius</label>
+            <input type="number" id="radius" name="radius" min="1" max="100" value="3"/>
+            <br/>
+            <label for="imageInput">Image</label>
+            <input type="file" id="imageInput" name="image" accept="image/*"/>
+            <br/>
+            <button type="submit">Submit</button>
+            <label id="loadingText"></label>
+        </form>
+        <br/>
+        <div id="images">
+           <img id="uploadedImg"       
+            />
+            <img id="processedImg"
+
+            /> 
+        </div>
+        
+
+        <script src="scripts/script.js"></script>
+
+
+</body>
+</html>
