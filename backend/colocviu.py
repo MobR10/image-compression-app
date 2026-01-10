@@ -9,9 +9,10 @@ def load(path):
 def save(path,rgb):
     Image.fromarray(rgb).save(path)
 
+#return-ul este o matrice cu valori de 0 pentru background, 1 pentru par, 2 pentru corp etc. 
+# Obtinem o persoana daca value-ul este >0 (adica nu este background)
 def get_person_mask_tasks(rgb, model_path):
-    #return-ul este de forma 0 pentru background, 1 pentru par, 2 pentru corp etc. 
-    # Obtinem o persoana daca value-ul este >0 (adica nu este background)
+    
     BaseOptions = mp.tasks.BaseOptions
     ImageSegmenter = mp.tasks.vision.ImageSegmenter
     ImageSegmenterOptions = mp.tasks.vision.ImageSegmenterOptions
@@ -87,6 +88,7 @@ def composition(rgb, person_mask, k):
     sharp = rgb.astype(np.float64)/255
     blurred = svd_blur_rgb(rgb, k).astype(np.float64)/255
 
+    # return (blurred*255).astype(np.uint8)
     out = sharp * m3 + blurred * (1- m3)
     out = np.clip(out,0,1)
     return (out * 255).astype(np.uint8)
@@ -111,7 +113,11 @@ MODEL_PATH = "models/selfie_multiclass_256x256.tflite"
 
 def process_image(fileInBytes,k,blur_radius=3):
     rgb = load_image_bytes(fileInBytes)
-    person = get_person_mask_tasks(rgb, MODEL_PATH)
-    person = soften_mask(person,blur_radius)
-    out = composition(rgb,person,k)
+    if blur_radius < 0 :
+        out = composition(rgb,np.zeros((rgb.shape[0],rgb.shape[1])),k)
+    else:
+        person = get_person_mask_tasks(rgb, MODEL_PATH)
+        person = soften_mask(person,blur_radius)
+        out = composition(rgb,person,k)
+    
     return out

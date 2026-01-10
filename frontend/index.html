@@ -15,7 +15,7 @@
     <div class="card">
       <div class="card__header">
         <h1>Compression App</h1>
-        <p>Attach your image and tweak compression & blur.</p>
+        <p>Attach your image and tweak blur & blur radius. Radius = -1 will blur the entire image. Radius > -1 will blur around the person.</p> 
       </div>
 
       <div class="card__body">
@@ -23,13 +23,13 @@
           
           <div class="row">
             <div class="field">
-              <label for="factor">Compression Factor</label>
+              <label for="factor">Blur Factor</label>
               <input type="number" id="factor" name="factor" min="1" max="100" value="10"/>
             </div>
 
             <div class="field">
               <label for="radius">Blur Radius</label>
-              <input type="number" id="radius" name="radius" min="1" max="100" value="3"/>
+              <input type="number" id="radius" name="radius" min="-1" max="100" value="3"/>
             </div>
           </div>
 
