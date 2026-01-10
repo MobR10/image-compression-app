@@ -1,21 +1,3 @@
-"""
-Background blur (SVD low-rank) + sharp person using MediaPipe Tasks API (mediapipe 0.10.30/0.10.31).
-
-Install (in your venv):
-  pip install mediapipe pillow numpy
-
-You ALSO need a MediaPipe image segmentation model file (.tflite), e.g.:
-  selfie_multiclass_256x256.tflite
-
-Example run (PowerShell):
-  python F:\Facultate\MN\colocviu.py `
-    --input F:\Facultate\MN\input.jpg `
-    --model F:\Facultate\MN\models\selfie_multiclass_256x256.tflite `
-    --output F:\Facultate\MN\output.jpg `
-    --k 40 --mask_blur 3
-"""
-
-import argparse
 import numpy as np
 from PIL import Image
 import mediapipe as mp
@@ -54,7 +36,6 @@ def get_person_mask_tasks(rgb, model_path):
         raise ValueError(f"Expected 2D person mask, got shape {person.shape}")
 
     return person
-
 
 def box_blur_2d(x, r):
     if r <= 0:
@@ -116,12 +97,10 @@ def composition(rgb, person_mask, k):
 from io import BytesIO
 
 def load_image_bytes(file_bytes):
-    """Convert bytes from uploaded file to NumPy RGB array"""
     img = Image.open(BytesIO(file_bytes)).convert("RGB")
     return np.array(img)
 
 def image_to_bytes(rgb_array):
-    """Convert NumPy RGB array to BytesIO (JPEG) for send_file"""
     img = Image.fromarray(rgb_array.astype(np.uint8))
     buf = BytesIO()
     img.save(buf, format="JPEG")
@@ -136,26 +115,3 @@ def process_image(fileInBytes,k,blur_radius=3):
     person = soften_mask(person,blur_radius)
     out = composition(rgb,person,k)
     return out
-
-# def main():
-#     parser = argparse.ArgumentParser()
-#     parser.add_argument("--input", required=True)
-#     parser.add_argument("--model", required=True)
-#     parser.add_argument("--output", default="output.jpg")
-#     parser.add_argument("--k", type=int)
-#     parser.add_argument("--mask_blur", type=int)
-#     args = parser.parse_args()
-
-#     rgb = load(args.input)
-
-#     person = get_person_mask_tasks(rgb, args.model)
-
-#     if args.mask_blur > 0:
-#         person = soften_mask(person, blur_radius=args.mask_blur)
-
-#     out = composition(rgb, person, k=args.k)
-#     save(args.output, out)
-
-# if __name__ == "__main__":
-#     main()
-

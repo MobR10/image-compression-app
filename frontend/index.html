@@ -10,34 +10,60 @@
     <title>Compression App</title>
 </head>
 <body>
-    <h1>Welcome to our Compression App</h1>
-        <p>Attach your image to compress it!</p>
+  <div class="page">
 
+    <div class="card">
+      <div class="card__header">
+        <h1>Compression App</h1>
+        <p>Attach your image and tweak compression & blur.</p>
+      </div>
+
+      <div class="card__body">
         <form id="imgForm" action="http://localhost:5000/processImage" method="post" enctype="multipart/form-data">
-            <label for="factor">Compression Factor</label>
-            <input type="number" id="factor" name="factor" min="1" max="100" value="10"/>
-            <br/>
-            <label for="radius">Blur Radius</label>
-            <input type="number" id="radius" name="radius" min="1" max="100" value="3"/>
-            <br/>
+          
+          <div class="row">
+            <div class="field">
+              <label for="factor">Compression Factor</label>
+              <input type="number" id="factor" name="factor" min="1" max="100" value="10"/>
+            </div>
+
+            <div class="field">
+              <label for="radius">Blur Radius</label>
+              <input type="number" id="radius" name="radius" min="1" max="100" value="3"/>
+            </div>
+          </div>
+
+          <div class="field">
             <label for="imageInput">Image</label>
             <input type="file" id="imageInput" name="image" accept="image/*"/>
-            <br/>
-            <button type="submit">Submit</button>
+          </div>
+
+          <div class="actions">
+            <button type="submit">Process</button>
             <label id="loadingText"></label>
+          </div>
         </form>
-        <br/>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__body">
         <div id="images">
-           <img id="uploadedImg"       
-            />
-            <img id="processedImg"
+          <div class="preview">
+            <div class="preview__title">Original</div>
+            <img id="uploadedImg" class="preview__img" />
+          </div>
 
-            /> 
+          <div class="preview">
+            <div class="preview__title">Processed</div>
+            <img id="processedImg" class="preview__img" />
+          </div>
         </div>
-        
+      </div>
+    </div>
 
-        <script src="scripts/script.js"></script>
+  </div>
 
-
+  <script src="scripts/script.js"></script>
 </body>
 </html>
